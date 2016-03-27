@@ -24,6 +24,20 @@
          </div>
        </div>
 
+       <div class="row">
+         <div class="col-md-offset-2 col-md-8 text-center">
+           <form>
+             <div class="form-group">
+               <label for="text">新的事项</label>
+               <input type="text" id="text" class="form-control" ng-model="todo.text">
+             </div>
+             <div class="form-group">
+               <button class="btn btn-primary" ng-click="addTodo()">增加</button>
+             </div>
+           </form>
+         </div>
+       </div>
+
 
 
      </div>
@@ -33,8 +47,30 @@
   <script src="/lib/angular/angular.js"></script>
   <script>
     angular.module('todoModule',[]);
-    angular.module('todoModule').controller('todoCtrl',function($scope){
-      $scope.todos = [{_id:1,text:'买宝马'},{_id:2,text:'买幻影'}];
+    angular.module('todoModule').factory('todoService',function($http){
+      return {
+        list:function(){//列出所有
+          return $http.get('/todos');
+        },
+        add:function(data){//增加
+          //把data放在请求体里
+          return $http.post('/todos',data);
+        }
+      }
+    });
+    angular.module('todoModule').controller('todoCtrl',function($scope,todoService){
+      //请向服务器所有的待办事项,返回一个promise
+      todoService.list().success(function(todos){
+        $scope.todos = todos;
+      });
+      $scope.todo = {};
+      $scope.addTodo = function(){
+        //保存新的事项
+        todoService.add($scope.todo).success(function(todo){
+          console.log(todo);
+          $scope.todos.push(todo);
+        });
+      }
     });
   </script>
 </html>
