@@ -43,3 +43,8 @@ git commit -m"init"
 git remote add origin 远程仓库
 git push -u origin master
 ```
+
+#9.安装mongodb
+```
+npm install mongoose --save
+```

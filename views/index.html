@@ -18,7 +18,7 @@
          <div class="col-md-offset-4 col-md-4">
            <div class="checkbox" ng-repeat="todo in todos">
              <label>
-               <input type="checkbox"> {{todo.text}}
+               <input type="checkbox"> {{todo.text}}<span class="glyphicon glyphicon-minus" ng-click="delete(todo._id)"></span>
              </label>
            </div>
          </div>
@@ -30,9 +30,11 @@
              <div class="form-group">
                <label for="text">新的事项</label>
                <input type="text" id="text" class="form-control" ng-model="todo.text">
+
              </div>
              <div class="form-group">
                <button class="btn btn-primary" ng-click="addTodo()">增加</button>
+               <button class="btn btn-primary" ng-click="batchDelete()">批量删除</button>
              </div>
            </form>
          </div>
@@ -55,7 +57,10 @@
         add:function(data){//增加
           //把data放在请求体里
           return $http.post('/todos',data);
-        }
+        },
+        delete:function(id){//增加
+          return $http.delete('/todos/'+id);
+      }
       }
     });
     angular.module('todoModule').controller('todoCtrl',function($scope,todoService){
@@ -67,8 +72,15 @@
       $scope.addTodo = function(){
         //保存新的事项
         todoService.add($scope.todo).success(function(todo){
-          console.log(todo);
           $scope.todos.push(todo);
+          $scope.todo = {};
+        });
+      }
+      $scope.delete= function(id){
+        todoService.delete(id).success(function(data){
+          $scope.todos = $scope.todos.filter(function(todo){
+            return todo._id != id ;
+          });
         });
       }
     });
