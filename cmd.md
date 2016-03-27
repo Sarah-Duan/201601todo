@@ -33,7 +33,10 @@ bower install bootstrap --save
 #6. 初始化git仓库
 ```git init```
 
-#7.添加并提交代码并推送到远程仓库
+#7.在github上新建一个空项目
+> 一定是新的空项目
+
+#8.添加并提交代码并推送到远程仓库
 ```
 git add -A
 git commit -m"init"
