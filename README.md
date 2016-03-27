@@ -4,7 +4,7 @@ git clone https://github.com/zhufengnodejs/201601todo.git
 ```
 #安装前后台依赖的库
 ```
-npm install && bower install
+cd 201601todo && npm install && bower install
 ```
 #启动项目
 ```

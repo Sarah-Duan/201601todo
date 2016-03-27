@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="todoModule">
   <head>
     <title>珠峰待办事项</title>
     <meta charset="utf-8">
@@ -8,10 +8,20 @@
     <link rel="stylesheet" href="../public/lib/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css">
   </head>
-  <body>
-
+  <body style="margin-top: 50px;">
+     <div class="container">
+       <div class="jumbotron text-center">
+         <h1><label class="label label-info">你有{{}}个待办事项</label></h1>
+       </div>
+     </div>
   </body>
   <script src="/lib/jquery/dist/jquery.js"></script>
   <script src="/lib/bootstrap/dist/js/bootstrap.js"></script>
   <script src="/lib/angular/angular.js"></script>
+  <script>
+    angular.module('todoModule',[]);
+    angular.module('todoModule').controller('todoCtrl',function($scope){
+
+    });
+  </script>
 </html>
