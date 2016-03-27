@@ -1,5 +1,5 @@
 ##1. 安装express生成器
-> npm install express-genertor -g
+> npm install express-generator -g
 
 ##2. 生成项目 
 > express -e todolist
