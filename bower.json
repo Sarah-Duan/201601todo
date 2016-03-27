@@ -1,0 +1,25 @@
+{
+  "name": "todolist",
+  "description": "",
+  "main": "",
+  "authors": [
+    "zfpx <zfpx@126.com>"
+  ],
+  "license": "MIT",
+  "moduleType": [
+    "node"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.2.2",
+    "angular": "~1.5.3",
+    "bootstrap": "~3.3.6"
+  }
+}
