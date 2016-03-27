@@ -6,6 +6,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.css">
 </head>
 <body style="margin-top: 50px;" ng-controller="todoCtrl">
 <div class="container">
@@ -15,6 +16,9 @@
 
     <div class="row">
         <div class="col-md-offset-4 col-md-4">
+            <p class="text-center" ng-show="loading">
+                <i class="fa fa-spinner fa-spin"></i>
+            </p>
             <button class="btn btn-success" ng-click="selectAll()" >全选</button>
             <div class="checkbox" ng-repeat="todo in todos">
                 <label>
@@ -62,46 +66,53 @@
                 return $http.delete('/todos/' + id);
             },
             batchDelete: function (data) {
-                return $http.delete('/todos/delete', data);
+                return $http.post('/todos/delete', data);
             }
         }
     });
     angular.module('todoModule').controller('todoCtrl', function ($scope, todoService) {
         //请向服务器所有的待办事项,返回一个promise
+        $scope.loading = true;
         todoService.list().success(function (todos) {
             todos.forEach(function(todo){
                 todo.checked = false;
             });
             $scope.todos = todos;
+            $scope.loading = false;
         });
         $scope.todo = {};
         $scope.addTodo = function () {
+            $scope.loading = true;
             //保存新的事项
             todoService.add($scope.todo).success(function (todo) {
                 $scope.todos.push(todo);
                 $scope.todo = {};
+                $scope.loading = false;
             });
         }
         $scope.delete = function (id) {
+            $scope.loading = true;
             todoService.delete(id).success(function (data) {
                 $scope.todos = $scope.todos.filter(function (todo) {
                     return todo._id != id;
                 });
+                $scope.loading = false;
             });
         }
 
         $scope.batchDelete = function () {
+            $scope.loading = true;
             var selectedIds = [];
             $scope.todos.forEach(function(todo){
                 if(todo.checked){
                     selectedIds.push(todo._id);
                 }
             });
-            console.log(selectedIds);
             todoService.batchDelete(selectedIds).success(function () {
                 $scope.todos = $scope.todos.filter(function (todo) {
                     return selectedIds.indexOf(todo._id) == -1;
                 });
+                $scope.loading = false;
             });
         }
 
