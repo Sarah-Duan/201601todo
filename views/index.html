@@ -8,11 +8,24 @@
     <link rel="stylesheet" href="../public/lib/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css">
   </head>
-  <body style="margin-top: 50px;">
+  <body style="margin-top: 50px;" ng-controller="todoCtrl">
      <div class="container">
        <div class="jumbotron text-center">
          <h1><label class="label label-info">你有{{}}个待办事项</label></h1>
        </div>
+
+       <div class="row">
+         <div class="col-md-offset-4 col-md-4">
+           <div class="checkbox" ng-repeat="todo in todos">
+             <label>
+               <input type="checkbox"> {{todo.text}}
+             </label>
+           </div>
+         </div>
+       </div>
+
+
+
      </div>
   </body>
   <script src="/lib/jquery/dist/jquery.js"></script>
@@ -21,7 +34,7 @@
   <script>
     angular.module('todoModule',[]);
     angular.module('todoModule').controller('todoCtrl',function($scope){
-
+      $scope.todos = [{_id:1,text:'买宝马'},{_id:2,text:'买幻影'}];
     });
   </script>
 </html>
