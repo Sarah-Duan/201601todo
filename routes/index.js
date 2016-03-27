@@ -37,4 +37,16 @@ router.route('/todos/:_id').delete(function(req,res){
     });
 })
 
+router.route('/todos/delete').delete(function(req,res){
+    var ids = req.body;
+console.error('ids',ids);
+    todoModel.remove({_id:{$in:ids}},function(err,result){
+        if (err) {
+            res.send({code: 0, msg: '删除失败!'});
+        } else {
+            res.send({code: 1, msg: '删除成功!'});
+        }
+    });
+})
+
 module.exports = router;

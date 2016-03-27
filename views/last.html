@@ -15,10 +15,10 @@
 
     <div class="row">
         <div class="col-md-offset-4 col-md-4">
-            <button class="btn btn-success" ng-click="selectAll()" >全选</button>
+            <button class="btn btn-success" ng-click="selectAll()">全选</button>
             <div class="checkbox" ng-repeat="todo in todos">
                 <label>
-                    <input type="checkbox" ng-checked="todo.checked" ng-click="todo.checked = !todo.checked">
+                    <input type="checkbox" ng-checked="checked" ng-click="isSelected(todo._id)">
                     {{todo.text}}<span class="glyphicon glyphicon-minus" ng-click="delete(todo._id)"></span>
                 </label>
             </div>
@@ -75,6 +75,8 @@
             $scope.todos = todos;
         });
         $scope.todo = {};
+        $scope.selected = [];
+        $scope.checked = 0;
         $scope.addTodo = function () {
             //保存新的事项
             todoService.add($scope.todo).success(function (todo) {
@@ -90,29 +92,32 @@
             });
         }
 
+        $scope.isSelected = function (id) {
+            var index = $scope.selected.indexOf(id);
+            if (index >= 0) {
+                $scope.selected.splice(index, 1);
+            } else {
+                $scope.selected.push(id);
+            }
+        }
         $scope.batchDelete = function () {
-            var selectedIds = [];
-            $scope.todos.forEach(function(todo){
-                if(todo.checked){
-                    selectedIds.push(todo._id);
-                }
-            });
-            console.log(selectedIds);
-            todoService.batchDelete(selectedIds).success(function () {
+            todoService.batchDelete($scope.selected).success(function () {
                 $scope.todos = $scope.todos.filter(function (todo) {
-                    return selectedIds.indexOf(todo._id) == -1;
+                    return $scope.selected.indexOf(todo._id) == -1;
                 });
             });
         }
 
         $scope.selectAll = function(){
-            var all = $scope.todos.length;
-            var length = $scope.todos.filter(function(todo){
-                return todo.checked;
-            }).length;
-            $scope.todos.forEach(function(todo){
-                todo.checked = (all != length);
-            })
+            $scope.checked = $scope.checked?0:1;
+            // 清空要删除的ID列表
+            $scope.selected.length =0;
+            //如果是全选的话，要把所有的ID全部添加到删除的ID列表中
+            if($scope.checked){
+                $scope.todos.forEach(function(todo){
+                    $scope.selected.push(todo._id);
+                });
+            }
         }
     });
 </script>
